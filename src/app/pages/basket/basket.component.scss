@@ -1,0 +1,30 @@
+table {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .total {
+    text-align: right;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+  }
+
+  h2 {
+    color: #83bb00;
+  }
+
+  .basket{
+    padding-left: 200px;
+    padding-right: 200px;
+  }
+
+.tr:nth-of-type(even) {
+    background-color: #83bb00;
+  }
+
+  @media (max-width: 576px) {
+    .basket {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }

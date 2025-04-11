@@ -1,0 +1,11 @@
+<tr>
+  <td>{{ item.ticket.name }}</td>
+  <td>{{ item.ticket.type }}</td>
+  <td>{{ item.ticket.price }} Ft</td>
+  <td>{{ item.quantity }}</td>
+  <td>{{ item.ticket.price * item.quantity }} Ft</td>
+  <td>
+    <button (click)="onIncrease()">➕</button>
+    <button (click)="onDecrease()">➖</button>
+  </td>
+</tr>

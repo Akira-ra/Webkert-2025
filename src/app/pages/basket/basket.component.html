@@ -1,0 +1,26 @@
+<div class="basket">
+  <h2>Kosár tartalma</h2>
+  <table class="mat-elevation-z8">
+    <thead>
+      <tr>
+        <th>Típus</th>
+        <th>Kategória</th>
+        <th>Egységár</th>
+        <th>Mennyiség</th>
+        <th>Összesen</th>
+        <th>Műveletek</th>
+      </tr>
+    </thead>
+    <tbody>
+      <app-ticket-item
+        *ngFor="let item of basketItems"
+        [item]="item"
+        (increase)="increaseQuantity(item.ticket.id)"
+        (decrease)="decreaseQuantity(item.ticket.id)">
+      </app-ticket-item>
+    </tbody>
+  </table>
+  <div class="total">
+    <strong>Végösszeg:</strong> {{ getTotalPrice() }} Ft
+  </div>
+</div>
