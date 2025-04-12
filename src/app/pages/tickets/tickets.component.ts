@@ -25,11 +25,13 @@ export class TicketsComponent {
   columnsTicketBasic = [
     { columnDef: 'name', header: 'Típus', cell: (ticket: Ticket) => ticket.name },
     { columnDef: 'price', header: 'Ár (Ft)', cell: (ticket: Ticket) => `${ticket.price} Ft` },
+    { columnDef: 'actions', header: 'Műveletek', cell: (ticket: Ticket) => ticket }
   ];
 
   columnsTicketTour = [
     { columnDef: 'name', header: 'Típus', cell: (ticket: Ticket) => ticket.name },
     { columnDef: 'price', header: 'Ár (Ft)', cell: (ticket: Ticket) => `${ticket.price} Ft` },
+    { columnDef: 'actions', header: 'Műveletek', cell: (ticket: Ticket) => ticket }
   ];
 
   dataSource1 = TICKETS_BASIC;
@@ -37,4 +39,11 @@ export class TicketsComponent {
 
   dataSource2 = TICKETS_TOUR;
   displayedColumns2 = this.columnsTicketTour.map(c => c.columnDef);
+
+
+  addToBasket(ticket: Ticket) {
+    console.log('Added to basket:', ticket);
+    // TODO
+  }
 }
+

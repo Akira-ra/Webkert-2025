@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { BasketItem } from '../../../shared/models/Basket';
 
 @Component({
-  selector: 'app-ticket-item',
+  selector: 'tr[app-ticket-item]',
   standalone: true,
   imports: [],
   templateUrl: './ticket-item.component.html',

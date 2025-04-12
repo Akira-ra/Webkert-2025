@@ -12,12 +12,12 @@
       </tr>
     </thead>
     <tbody>
-      <app-ticket-item
-        *ngFor="let item of basketItems"
-        [item]="item"
-        (increase)="increaseQuantity(item.ticket.id)"
-        (decrease)="decreaseQuantity(item.ticket.id)">
-      </app-ticket-item>
+      <tr app-ticket-item
+          *ngFor="let item of basketItems"
+          [item]="item"
+          (increase)="increaseQuantity(item.ticket.id)"
+          (decrease)="decreaseQuantity(item.ticket.id)">
+      </tr>
     </tbody>
   </table>
   <div class="total">

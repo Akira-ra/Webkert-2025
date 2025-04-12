@@ -1,0 +1,65 @@
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    padding: 16px;
+  }
+  
+  .tile {
+    flex: 1 1 calc(33.333% - 32px);
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    background-color: white;
+  }
+  
+  .tile img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .caption {
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #f4f4f4;
+    font-size: 16px;
+  }
+
+  .card-container{
+    display: flex;
+    justify-content: center;
+  }
+  
+  mat-card{
+    max-width: 300px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    align-self: center;
+  }
+
+  mat-card-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  mat-card-actions{
+    align-self: center;
+  }
+
+  button, .goToTicketButton{
+    color: #83bb00;
+  }
+
+  @media (max-width: 576px) {
+    mat-card {
+      margin: 16px;
+      max-width: 90%;
+    }
+  }
