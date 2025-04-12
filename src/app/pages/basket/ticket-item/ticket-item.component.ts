@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { BasketItem } from '../../../shared/models/Basket';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'tr[app-ticket-item]',
   standalone: true,
-  imports: [],
+  imports: [NgClass],
   templateUrl: './ticket-item.component.html',
   styleUrl: './ticket-item.component.scss'
 })

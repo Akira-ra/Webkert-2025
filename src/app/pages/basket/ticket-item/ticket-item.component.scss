@@ -16,6 +16,11 @@
     align-items: center;
     justify-content: center;
   }
+
+  .disabled-button {
+    opacity: 0.5;
+    pointer-events: none;
+  }
   
   button:hover {
     background-color: #e0e0e0;

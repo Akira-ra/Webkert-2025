@@ -15,6 +15,7 @@
       <tr app-ticket-item
           *ngFor="let item of basketItems"
           [item]="item"
+          [ngStyle]="{ 'background-color': item.quantity < 2 ? '#cfcfce' : 'white' }"
           (increase)="increaseQuantity(item.ticket.id)"
           (decrease)="decreaseQuantity(item.ticket.id)">
       </tr>
