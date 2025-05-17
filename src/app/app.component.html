@@ -24,6 +24,10 @@
               <li><a routerLink="/basket">Kosár</a>
                 <mat-icon matListItemIcon matBadge="2" class="inline-icon">shopping_basket</mat-icon></li>
               }
+              @if (isLoggedIn) {
+                <li><a routerLink="/admin">Admin felület</a>
+                  <mat-icon matListItemIcon class="inline-icon">admin_panel_settings</mat-icon></li>
+                }
               @if (!isLoggedIn) {
               <li><a routerLink="/login">Bejelentkezés</a>
                 <mat-icon matListItemIcon class="inline-icon">login</mat-icon></li>

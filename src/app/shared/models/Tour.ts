@@ -1,9 +1,9 @@
 import { Ticket } from "./Ticket";
 
 export interface Tour{
-    id: number;
+    id: string;
     name: string;
     date: Date;
-    time: number;
-    tickets: Ticket[]
+    ticketsMax: number;
+    ticketsRemain: number;
 }

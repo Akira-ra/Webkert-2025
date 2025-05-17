@@ -1,11 +1,9 @@
 import { Ticket } from "./Ticket";
 
-export interface User{
+export interface MuseumUser{
     name:{
         firstname: string;
         lastname: string;
     };
     email: string;
-    password: string;
-    tickets: Ticket[];
 }

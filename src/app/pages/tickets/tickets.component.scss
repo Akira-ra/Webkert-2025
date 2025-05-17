@@ -1,6 +1,6 @@
 table {
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 20px;
   }
   
   th, td {
@@ -38,6 +38,11 @@ table {
   
   button:hover {
     background-color: #e0e0e0;
+  }
+
+  .disabled-button {
+    opacity: 0.5;
+    pointer-events: none;
   }
 
   @media (max-width: 576px) {

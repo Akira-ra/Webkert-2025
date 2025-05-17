@@ -1,49 +1,66 @@
-
-
 <div class="tickets-container">
   <div class="ticket-table">
     <h2>Kiállítás jegyek</h2>
-      <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8">
+  
+    <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8">
       
-        @for (column of columnsTicketBasic; track column) {
-          <ng-container [matColumnDef]="column.columnDef">
-            <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
-            <td mat-cell *matCellDef="let ticket">
-              @if (column.columnDef === 'actions') {
-                <button (click)="addToBasket(ticket)">➕</button>
-              } @else {
-                {{ column.cell(ticket) }}
-              }
-            </td>
+      <ng-container *ngFor="let column of columnsTicketBasic" [matColumnDef]="column.columnDef">
+        <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+        <td mat-cell *matCellDef="let ticket">
+          <ng-container *ngIf="column.columnDef === 'actions'; else regularCell">
+            <button (click)="addToBasket(ticket)"><mat-icon>add</mat-icon></button>
+            <button *ngIf="isAdmin" (click)="navigateToEdit(ticket.id)"><mat-icon>edit</mat-icon></button>
+            <button *ngIf="isAdmin" (click)="deleteTicket(ticket.id)"><mat-icon>delete</mat-icon></button>
           </ng-container>
-        }
+          <ng-template #regularCell>
+            {{ column.cell(ticket) }}
+          </ng-template>
+        </td>
+      </ng-container>
       
-        <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
-      </table>
-    </div>
-
-      <mat-divider></mat-divider>
-
-    <div class="tour-table">
-      <h2>Túrajegyek</h2>
-      <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
+      <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+    </table>
+  </div>
+  
+  <mat-divider></mat-divider>
+  
+  <div class="tour-table">
+    <h2>Túrajegyek</h2>
+    <mat-form-field appearance="fill">
+      <mat-label>Dátum</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    
+    <button mat-raised-button color="primary" (click)="filterByDate()">Szűrés</button>
+    <button mat-button (click)="selectedDate = null; filterByDate()">Szűrés törlése</button>
+    <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
       
-        @for (column of columnsTicketTour; track column) {
-          <ng-container [matColumnDef]="column.columnDef">
-            <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
-            <td mat-cell *matCellDef="let ticket">
-              @if (column.columnDef === 'actions') {
-                <button (click)="addToBasket(ticket)">➕</button>
-              } @else {
-                {{ column.cell(ticket) }}
-              }
-            </td>
+      <ng-container *ngFor="let column of columnsTicketTour" [matColumnDef]="column.columnDef">
+        <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+        <td mat-cell *matCellDef="let ticket" >
+          <ng-container *ngIf="column.columnDef === 'actions'; else regularCell">
+              <mat-form-field appearance="fill">
+                <mat-label>Válassz túrát</mat-label>
+                <mat-select [(ngModel)]="selectedTour[ticket.id]">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let tour of tours" [value]="tour">
+                    {{ tour.name }} ({{ tour.date | date:'short' }})
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            <button (click)="addToBasket(ticket)"><mat-icon>add</mat-icon></button>
           </ng-container>
-        }
+          <ng-template #regularCell>
+            {{ column.cell(ticket) }}
+          </ng-template>
+        </td>
+      </ng-container>
       
-        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
-      </table>
-    </div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+    </table>
+  </div>
 </div>

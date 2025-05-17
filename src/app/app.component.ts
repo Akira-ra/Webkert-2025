@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import {MatBadgeModule} from '@angular/material/badge';
+import { AuthService } from './shared/services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -26,18 +28,20 @@ export class AppComponent {
   title = "museum"
   isLoggedIn = false;
 
+  private authSubscription?: Subscription;
+
+  constructor(private authService: AuthService) {}
+
   ngOnInit(): void {
-    this.checkLoginStatus();
+    this.authSubscription = this.authService.currentUser.subscribe(user => {
+      this.isLoggedIn = !!user;
+      localStorage.setItem('isLoggedIn', this.isLoggedIn ? 'true' : 'false');
+    });
   }
 
-  checkLoginStatus(): void {
-    this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  }
 
   logout(): void {
-    localStorage.setItem('isLoggedIn', 'false');
-    this.isLoggedIn = false;
-    window.location.href = '/home';
+    this.authService.signOut();
   }
 
   onToggleSidenav(sidenav: MatSidenav){

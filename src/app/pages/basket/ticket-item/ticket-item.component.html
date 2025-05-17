@@ -5,5 +5,5 @@
 <td>{{ item.ticket.price * item.quantity }} Ft</td>
 <td>
   <button (click)="onIncrease()">➕</button>
-  <button [ngClass]="{'disabled-button': item.quantity === 1}" (click)="onDecrease()">➖</button>
+  <button (click)="onDecrease()">➖</button>
 </td>

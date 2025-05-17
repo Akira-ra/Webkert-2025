@@ -16,12 +16,14 @@
           *ngFor="let item of basketItems"
           [item]="item"
           [ngStyle]="{ 'background-color': item.quantity < 2 ? '#cfcfce' : 'white' }"
-          (increase)="increaseQuantity(item.ticket.id)"
-          (decrease)="decreaseQuantity(item.ticket.id)">
+          (increase)="increaseQuantity($event.ticketId, $event.tourId)"
+          (decrease)="decreaseQuantity($event.ticketId, $event.tourId)">
       </tr>
     </tbody>
   </table>
   <div class="total">
     <strong>Végösszeg:</strong> {{ getTotalPrice() }} Ft
   </div>
+  <button mat-flat-button class="purchaseButton" (click)="finalizePurchase()">Vásárlás</button>
+
 </div>

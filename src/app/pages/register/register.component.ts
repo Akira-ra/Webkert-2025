@@ -7,7 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { User } from '../../shared/models/User';
+import { MuseumUser } from '../../shared/models/User';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +25,7 @@ import { User } from '../../shared/models/User';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
+
 export class RegisterComponent {
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -39,7 +41,10 @@ export class RegisterComponent {
   showForm = true;
   signupError = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   register(): void {
     if (this.registerForm.invalid) {
@@ -57,21 +62,42 @@ export class RegisterComponent {
     this.isLoading = true;
     this.showForm = false;
 
-    const newUser: User = {
+    const userData: Partial<MuseumUser> = {
       name: {
         firstname: this.registerForm.value.name?.firstname || '',
         lastname: this.registerForm.value.name?.lastname || ''
       },
       email: this.registerForm.value.email || '',
-      password: this.registerForm.value.password || '',
-      tickets : [] 
     };
 
-    console.log('Új felhasználó:', newUser);
-    console.log('Form érték:', this.registerForm.value);
+    const email = this.registerForm.value.email || '';
+    const pw = this.registerForm.value.password || '';
 
-    setTimeout(() => {
-      this.router.navigateByUrl('/home');
-    }, 2000);
+    this.authService.signUp(email, pw, userData)
+      .then(userCredential => {
+        console.log('Sikeres regisztráció:', userCredential.user);
+        this.authService.updateLoginStatus(true);
+        this.router.navigateByUrl('/home');
+      })
+      .catch(error => {
+        console.error('Regisztrációs hiba:', error);
+        this.isLoading = false;
+        this.showForm = true;
+        
+        switch(error.code) {
+          case 'auth/email-already-in-use':
+            this.signupError = 'Az email már használatban van.';
+            break;
+          case 'auth/invalid-email':
+            this.signupError = 'Érvénytelen email.';
+            break;
+          case 'auth/weak-password':
+            this.signupError = 'A jelszó túl rövid: legalább 8 karakter kell legyen.';
+            break;
+          default:
+            this.signupError = 'Hiba történt regisztráció közben. Próbálja újra később.';
+        }
+      });
   }
 }
+

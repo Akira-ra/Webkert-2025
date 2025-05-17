@@ -1,52 +1,46 @@
 <div class="register-container">
-    <h1>Fiók létrehozása</h1>
-    
-    @if (isLoading) {
-      <div class="loading-container">
-        <h2>Regisztráció folyamatban</h2>
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        <p>Kérlek várj...</p>
-      </div>
-    }
-  
-    @if (showForm) {
-      <form [formGroup]="registerForm" (ngSubmit)="register()" class="register-form">
-        <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" formControlName="email">
-            <mat-icon matSuffix>email</mat-icon>
-          </mat-form-field>
+  <h1>Fiók létrehozása</h1>
 
-        <div class="name-row" formGroupName="name">
-          <mat-form-field appearance="outline">
-            <mat-label>Családnév</mat-label>
-            <input matInput formControlName="lastname">
-            <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Keresztnév</mat-label>
-            <input matInput formControlName="firstname">
-            <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field>
-        </div>
-  
-        <mat-form-field appearance="outline">
-          <mat-label>Jelszó</mat-label>
-          <input matInput type="password" formControlName="password">
-          <mat-icon matSuffix>password</mat-icon>
-        </mat-form-field>
-  
-        <mat-form-field appearance="outline">
-          <mat-label>Jelszó újra</mat-label>
-          <input matInput type="password" formControlName="rePassword">
-          <mat-icon matSuffix>password</mat-icon>
-        </mat-form-field>
-  
-    
-        <button mat-flat-button color="primary" type="submit" class="registerSubmit">Regisztráció</button>
-        <p>Van már fiókod? <a [routerLink]="['/login']" class="goToLogin">Jelentkezz be!</a></p>
-        
-      </form>
-    }
+  <div *ngIf="isLoading" class="loading-container">
+    <h2>Regisztráció folyamatban</h2>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <p>Kérlek várj...</p>
   </div>
+
+  <form *ngIf="showForm" [formGroup]="registerForm" (ngSubmit)="register()" class="register-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+      <mat-icon matSuffix>email</mat-icon>
+    </mat-form-field>
+
+    <div class="name-row" formGroupName="name">
+      <mat-form-field appearance="outline">
+        <mat-label>Családnév</mat-label>
+        <input matInput formControlName="lastname" />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Keresztnév</mat-label>
+        <input matInput formControlName="firstname" />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Jelszó</mat-label>
+      <input matInput type="password" formControlName="password" />
+      <mat-icon matSuffix>password</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Jelszó újra</mat-label>
+      <input matInput type="password" formControlName="rePassword" />
+      <mat-icon matSuffix>password</mat-icon>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" type="submit" class="registerSubmit">Regisztráció</button>
+    <p>Van már fiókod? <a [routerLink]="['/login']" class="goToLogin">Jelentkezz be!</a></p>
+  </form>
+</div>

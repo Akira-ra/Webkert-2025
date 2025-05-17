@@ -4,6 +4,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TicketItemComponent } from './ticket-item/ticket-item.component';
+import { BasketService } from '../../shared/services/basket.service';
 
 
 @Component({
@@ -20,36 +21,50 @@ import { TicketItemComponent } from './ticket-item/ticket-item.component';
   styleUrl: './basket.component.scss'
 })
 export class BasketComponent {
-  @Input() basketItems: BasketItem[] = [    {
-    ticket: { id: 4, name: 'felnőtt', type: 'túra', price: 3500 },
-    quantity: 2
-  },
-  {
-    ticket: { id: 5, name: 'kedvezményes', type: 'túra', price: 2900 },
-    quantity: 1
-  }];
-
-  @Output() quantityChanged = new EventEmitter<{ ticketId: number, newQuantity: number }>();
-
+  basketItems: BasketItem[] = [];
   displayedColumns: string[] = ['name', 'type', 'price', 'quantity', 'total', 'actions'];
+  constructor(private basketService: BasketService) {}
+
+  @Output() quantityChanged = new EventEmitter<{ ticketId: string, newQuantity: number }>();
+
+  async ngOnInit(): Promise<void> {
+    this.basketService.basket$.subscribe(items => {
+      this.basketItems = items;
+    });
+  }
+
+  async loadBasket(): Promise<void> {
+    this.basketItems = await this.basketService.getBasket();
+  }
 
   getTotalPrice(): number {
     return this.basketItems.reduce((total, item) => total + item.ticket.price * item.quantity, 0);
   }
-
-  increaseQuantity(ticketId: number): void {
-    const item = this.basketItems.find(i => i.ticket.id === ticketId);
+  
+  async increaseQuantity(ticketId: string, tourId?: number): Promise<void> {
+    const item = this.basketItems.find(i =>
+      i.ticket.id === ticketId &&
+      ((tourId !== undefined && i.tour?.id === tourId) || (tourId === undefined && !i.tour))
+    );
+  
     if (item) {
-      item.quantity += 1;
-      this.quantityChanged.emit({ ticketId, newQuantity: item.quantity });
+      await this.basketService.updateQuantity(ticketId, item.quantity + 1, tourId);
     }
   }
   
-  decreaseQuantity(ticketId: number): void {
-    const item = this.basketItems.find(i => i.ticket.id === ticketId);
-    if (item && item.quantity > 1) {
-      item.quantity -= 1; 
-      this.quantityChanged.emit({ ticketId, newQuantity: item.quantity });
+  async decreaseQuantity(ticketId: string, tourId?: number): Promise<void> {
+    const item = this.basketItems.find(i =>
+      i.ticket.id === ticketId &&
+      ((tourId !== undefined && i.tour?.id === tourId) || (tourId === undefined && !i.tour))
+    );
+  
+    if (item) {
+      const newQuantity = item.quantity - 1;
+      await this.basketService.updateQuantity(ticketId, newQuantity, tourId);
     }
+  }
+
+  async finalizePurchase(): Promise<void> {
+    await this.basketService.finalizePurchase();
   }
 }

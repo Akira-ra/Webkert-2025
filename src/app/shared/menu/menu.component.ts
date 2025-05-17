@@ -6,6 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav } from '@angular/material/sidenav';
 import { CommonModule } from '@angular/common';
 import {MatBadgeModule} from '@angular/material/badge';
+import { NgIf } from '@angular/common';
+import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -15,7 +18,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatListModule,
     MatIconModule,
     CommonModule,
-    MatBadgeModule
+    MatBadgeModule,
+    NgIf
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
@@ -25,12 +29,17 @@ export class MenuComponent implements OnInit, AfterViewInit {
   @Input() isLoggedIn: boolean = false;
   @Output() logoutEvent = new EventEmitter<void>();
 
-  constructor() {
+  private authSubscription?: Subscription;
+
+  constructor(private authService: AuthService) {
     console.log("constructor called");
   }
 
   ngOnInit(): void {
-    console.log("ngOnInit called");
+      this.authSubscription = this.authService.currentUser.subscribe(user => {
+      this.isLoggedIn = !!user;
+      localStorage.setItem('isLoggedIn', this.isLoggedIn ? 'true' : 'false');
+    });
   }
 
   ngAfterViewInit(): void {
@@ -44,8 +53,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   logout() {
-    localStorage.setItem('isLoggedIn', 'false');
-    window.location.href = '/home';
-    this.closeMenu();
+    this.authService.signOut().then(() => {
+      this.logoutEvent.emit();
+      this.closeMenu();
+    });
   }
 }

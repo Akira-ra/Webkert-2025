@@ -8,25 +8,42 @@
           <mat-icon matListItemIcon>confirmation_number</mat-icon>
           <span matListItemTitle>Jegyvásárlás</span>
         </a>
-        @if (isLoggedIn) {
-        <a mat-list-item routerLink="/basket" routerLinkActive="active-list-item" (click)="closeMenu()">
-          <mat-icon matListItemIcon matBadge="2">shopping_basket</mat-icon>
-          <span matListItemTitle>Kosár</span>
-        </a>}
-        @if (!isLoggedIn) {
-        <a mat-list-item routerLink="/login" routerLinkActive="active-list-item" (click)="closeMenu()">
+        <a *ngIf="isLoggedIn"
+             mat-list-item
+             routerLink="/basket"
+             routerLinkActive="active-list-item"
+             (click)="closeMenu()">
+            <mat-icon matListItemIcon matBadge="2">shopping_basket</mat-icon>
+            <span matListItemTitle>Kosár</span>
+        </a>
+        
+        <a *ngIf="isLoggedIn"
+            mat-list-item routerLink="/admin" 
+            routerLinkActive="active-list-item" (click)="closeMenu()">
+          <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
+          <span matListItemTitle>Admin felület</span>
+        </a>
+
+        <a *ngIf="!isLoggedIn"
+            mat-list-item 
+            routerLink="/login" 
+            routerLinkActive="active-list-item" (click)="closeMenu()">
           <mat-icon matListItemIcon>login</mat-icon>
           <span matListItemTitle>Bejelentkezés</span>
-        </a> }
-        @if (!isLoggedIn) {
-        <a mat-list-item routerLink="/register" routerLinkActive="active-list-item" (click)="closeMenu()">
+        </a> 
+
+        <a  *ngIf="!isLoggedIn"
+            mat-list-item 
+            routerLink="/register" 
+            routerLinkActive="active-list-item" (click)="closeMenu()">
           <mat-icon matListItemIcon>person</mat-icon>
           <span matListItemTitle>Regisztráció</span>
-        </a> }  
-        @if (isLoggedIn) {
-          <a mat-list-item (click)="logout()">
-            <mat-icon matListItemIcon>logout</mat-icon>
-            <span matListItemTitle>Kijelentkezés</span>
-          </a>
-        }
+        </a> 
+        
+        <a *ngIf="isLoggedIn"
+            mat-list-item (click)="logout()">
+          <mat-icon matListItemIcon>logout</mat-icon>
+          <span matListItemTitle>Kijelentkezés</span>
+        </a>
+        
       </mat-nav-list>

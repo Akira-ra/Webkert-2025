@@ -1,0 +1,97 @@
+<div class="create-ticket-container">
+    <h1>Jegytípus felvitele</h1>
+        <form [formGroup]="createTicketForm" (ngSubmit)="createTicket()" class="create-ticket-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Jegy neve</mat-label>
+                <input matInput type="text" formControlName="name">
+            </mat-form-field>
+        
+            <mat-form-field>
+                <mat-label>Jegy típusa</mat-label>
+                <input matInput type="text" formControlName="type">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Jegy ára</mat-label>
+                <input matInput type="number" formControlName="price">
+            </mat-form-field>
+
+            <button mat-flat-button class="createTicketButton" type="submit">Létrehozás</button>
+        </form>
+</div>
+
+<div class="create-tour-container">
+    <h1>Túra felvitele</h1>
+        <form [formGroup]="createTourForm" (ngSubmit)="createTour()" class="create-tour-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Túra neve</mat-label>
+                <input matInput type="text" formControlName="tourName">
+            </mat-form-field>
+        
+            <mat-form-field>
+                <mat-label>Dátum</mat-label>
+                <input matInput [matDatepicker]="datepicker" formControlName="dateOnly">
+                <mat-datepicker #datepicker/>
+                <mat-datepicker-toggle [for]="datepicker" matSuffix/>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Időpont</mat-label>
+                <input matInput [matTimepicker]="timepicker" formControlName="timeOnly">
+                <mat-timepicker #timepicker/>
+                <mat-timepicker-toggle [for]="timepicker" matSuffix/>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Férőhelyek száma</mat-label>
+                <input matInput type="number" formControlName="maxCapacity">
+            </mat-form-field>
+
+            <button mat-flat-button class="createTourButton" type="submit">Létrehozás</button>
+        </form>
+</div>
+
+<h2>Legutóbbi jegyvásárlások</h2>
+
+<table *ngIf="!isLoadingPurchases && purchases.length > 0">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Dátum</th>
+      <th>Alap jegy (Ft)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let purchase of purchases">
+      <td>{{ purchase.email }}</td>
+      <td>{{ purchase.purchaseDate ? (purchase.purchaseDate.toDate ? (purchase.purchaseDate.toDate() | date:'yyyy.MM.dd HH:mm') : (purchase.purchaseDate | date:'yyyy.MM.dd HH:mm')) : '—' }}</td>
+      <td>{{ purchase.basicTicketPaid }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="!isLoadingPurchases && purchases.length === 0">Nincs találat.</p>
+<p *ngIf="isLoadingPurchases">Betöltés...</p>
+
+<h2>Legutóbbi túrajegy vásárlások</h2>
+
+<p *ngIf="isLoadingPurchasesT">Betöltés...</p>
+
+<table *ngIf="!isLoadingPurchasesT && purchasesT.length > 0">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Dátum</th>
+      <th>Túrajegy (Ft)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let purchase of purchasesT">
+      <td>{{ purchase.email }}</td>
+      <td>{{ purchase.purchaseDate ? (purchase.purchaseDate | date:'yyyy.MM.dd HH:mm') : '—' }}</td>
+      <td>{{ purchase.tourTicketPaid }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="!isLoadingPurchasesT && purchasesT.length === 0">Nincs találat.</p>
